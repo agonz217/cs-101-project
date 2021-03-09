@@ -1,0 +1,21 @@
+dom = 0
+def count_dom_phenotype(genotypes):
+    for index in range(len(genotypes)):
+        if index == 0:
+            dom = genotypes[0]*2
+        if index == 1:
+            dom = dom + genotypes[1]*2
+        if index == 2:
+            dom = dom + genotypes[2]*2
+        if index == 3:
+            dom = dom + genotypes[3]*2*0.75
+        if index == 4:
+            dom = dom + genotypes[4] * 2 * 0.5
+        if index == 5:
+            dom = dom + 0
+    return dom
+
+
+
+
+
