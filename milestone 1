@@ -1,5 +1,179 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Mar  9 16:10:18 2021
+
+@author: andresgonzalez
+"""
+
+#accepts a DNA string, dna, and returns a list of four integers 
+#representing the number of times that the nucleobases A, C, G, and T occur in dna.
+def dna_count(dna):
+    """Takes a DNA string and returns the integers for each letter. 
+    the integers are then placed in a dictionary"""
+    dna = dna.upper()
+    count_A = dna.count('A')
+    count_C = dna.count('C')
+    count_G = dna.count('G')
+    count_T = dna.count('T')
+    dict = {'A':count_A,'C':count_C,'G':count_G,'T':count_T}
+    return dict
+
+dnac1 = "AGCTTTTCATTCTGACTGCAACGGGCAATATGTCTCTGTGTGGATTAAAAAAAGAGTGTCTGATAGCAGC"
+print(dna_count(dnac1))
+		
+#accepts a DNA string, dna, and returns a string, rna, containing the RNA strand corresponding to its DNA input.
+def dna2rna(dna):
+    """takes a DNA string and returns an RNA string
+    it identifies the proper RNA letter for each 
+    letter of DNA"""
+    rna = ''
+		#Converting DNA symbols to RNA symbols
+    for symbol in dna:
+        if symbol == 'A':
+            rna = rna + 'A'
+        elif symbol == 'T':
+            rna = rna + 'U'
+        elif symbol == 'C':
+            rna = rna + 'C'
+        else:
+            rna = rna + 'G'
+    return rna
+
+dnat1 = "GATGGAACTTGACTACGTAAATT"
+print(dna2rna(dnat1))
+		
+#accepts a DNA string, dna, reverses the string and returns a string with the complements of the input nucleobases
+def reverse_complement(dna):
+    """Takes a DNA string, reverses it, then gives 
+    the proper RNA letter complement"""
+    dna_reverse_complement = ''
+    #reverse dna string
+    dna=dna[::-1]
+    #convert dna nucleobases to their complements
+    for symbol in dna:
+        if symbol == 'A':
+            dna_reverse_complement = dna_reverse_complement + 'T'
+        elif symbol == 'T':
+            dna_reverse_complement = dna_reverse_complement + 'A'
+        elif symbol == 'C':
+            dna_reverse_complement = dna_reverse_complement + 'G'
+        else:
+            dna_reverse_complement = dna_reverse_complement + 'C'
+    return dna_reverse_complement
+
+dnat2 = "AAAACCCGGT"
+print(reverse_complement(dnat2))
+
+def mendels_law(hom, het, rec):
+    """Takes the number of homozygous dominant, heterzygous,
+    and homozygous recessive and returns the probability
+    of having a dominant allele."""
+    T = hom + het + rec
+    twoRecess = (rec/T)*((rec-1)/(T-1))
+    twoHetero = (het/T)*((het-1)/(T-1))
+    heteroRecess=(rec/T)*(het/(T-1))+(het/T)*(het/(T-1))
+
+    recessProb = twoRecess + twoHetero * 1/4 + heteroRecess * 1/2
+    return 1 - recessProb
+
+print(mendels_law(2, 2, 2))
+
+def fibonacci_rabbits(n, k):
+    """uses the two integers to determine the number of rabbit pairs
+    after a given month. The reproduction is represented by
+    fibonaccis sequence"""
+    f1, f2 = 1, 1
+    for i in range(n - 1):
+        f2, f1 = f1, f1 + (f2 * k)
+    return f2
+
+print(fibonacci_rabbits(5, 3))
+
+
+def GC_content(dna_list):
+    """Takes a DNA string and returns the DNA string with the highest
+    GC content and GC content percentage as a tuple"""
+    count = []
+  
+    for i in range(len(dna_list)):
+        dna_str = dna_list[i]
+        count.append(dna_str.count('G') + dna_str.count('C'))
+  
+    maxGC_content = max(count)
+    maxGC_index = count.index(maxGC_content)
+    percent_GC = ((maxGC_content)/(len(dna_list[maxGC_index])))*100
+  
+    return (maxGC_index, percent_GC)
+
+#def rna2codon(rna)
+def rna2codon(rna): 
+    """Takes a RNA string and returns an amino acid string"""
+    table = {
+    "UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
+    "UCU":"S", "UCC":"s", "UCA":"S", "UCG":"S",
+    "UAU":"Y", "UAC":"Y", "UAA":"STOP", "UAG":"STOP",
+    "UGU":"C", "UGC":"C", "UGA":"STOP", "UGG":"W",
+    "CUU":"L", "CUC":"L", "CUA":"L", "CUG":"L",
+    "CCU":"P", "CCC":"P", "CCA":"P", "CCG":"P",
+    "CAU":"H", "CAC":"H", "CAA":"Q", "CAG":"Q",
+    "CGU":"R", "CGC":"R", "CGA":"R", "CGG":"R",
+    "AUU":"I", "AUC":"I", "AUA":"I", "AUG":"M",
+    "ACU":"T", "ACC":"T", "ACA":"T", "ACG":"T",
+    "AAU":"N", "AAC":"N", "AAA":"K", "AAG":"K",
+    "AGU":"S", "AGC":"S", "AGA":"R", "AGG":"R",
+    "GUU":"V", "GUC":"V", "GUA":"V", "GUG":"V",
+    "GCU":"A", "GCC":"A", "GCA":"A", "GCG":"A",
+    "GAU":"D", "GAC":"D", "GAA":"E", "GAG":"E",
+    "GGU":"G", "GGC":"G", "GGA":"G", "GGG":"G",}
+
+    protein ="" 
+    if len(rna)%3 == 0: 
+        for i in range(0, len(rna), 3): 
+            codon = rna[i:i + 3]
+            if table[codon]!="STOP":
+                    protein+= table[codon] 
+    return protein 
+print( rna2codon("AUGGCCAUGGCGCCCAGAACUGAGAUCAAUAGUACCCGUAUUAACGGGUGA"))
+
+
+
+#def locate_substring(dna_snippet, dna)
+def locate_substring(dna_snippet,dna):
+    """takes two strings where one is a specific substring of DNA
+    and the other is the actual DNA string. It returns the index
+    position of each substring"""
+    indexes = [i for i in range(len(dna_snippet)) if dna_snippet.startswith(dna, i)] 
+    return indexes
+
+print(locate_substring("GATATATGCATATACTT","ATAT"))
+
+
+#def hamming_dist(dna1, dna2)
+def hamming_distance(dna1, dna2):
+    """Takes two strings and determines the number of letters
+    that are in the same position for both strings"""
+    distance = 0
+    length = len(dna1)
+
+    for i in range(length):
+                dna1_char = dna1[i]
+                dna2_char = dna2[i]
+                if dna1_char != dna2_char:
+                        distance = distance + 1     
+    return distance 
+
+
+dna1 = 'GAGCCTACTAACGGGAT'
+dna2 = 'CATCGTAATGACGGCCT'
+distance = hamming_distance(dna1, dna2)
+print(distance)
+
 dom = 0
-def count_dom_phenotype(genotypes):
+def count_dom_phenotype(genotypes): #counts number of dominant genotypes
+    """Takes a list of genotypes and determines the number of offstring 
+    that has the dominant genotype given two offspring are produced 
+    with every couple"""
     for index in range(len(genotypes)):
         if index == 0:
             dom = genotypes[0]*2
@@ -15,7 +189,43 @@ def count_dom_phenotype(genotypes):
             dom = dom + 0
     return dom
 
+genotype1 = [1, 0, 0, 1, 0, 1]
+print(count_dom_phenotype(genotype1))
+
+def source_rna(protein):
+    table = {
+    "UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
+    "UCU":"S", "UCC":"s", "UCA":"S", "UCG":"S",
+    "UAU":"Y", "UAC":"Y", "UAA":"STOP", "UAG":"STOP",
+    "UGU":"C", "UGC":"C", "UGA":"STOP", "UGG":"W",
+    "CUU":"L", "CUC":"L", "CUA":"L", "CUG":"L",
+    "CCU":"P", "CCC":"P", "CCA":"P", "CCG":"P",
+    "CAU":"H", "CAC":"H", "CAA":"Q", "CAG":"Q",
+    "CGU":"R", "CGC":"R", "CGA":"R", "CGG":"R",
+    "AUU":"I", "AUC":"I", "AUA":"I", "AUG":"M",
+    "ACU":"T", "ACC":"T", "ACA":"T", "ACG":"T",
+    "AAU":"N", "AAC":"N", "AAA":"K", "AAG":"K",
+    "AGU":"S", "AGC":"S", "AGA":"R", "AGG":"R",
+    "GUU":"V", "GUC":"V", "GUA":"V", "GUG":"V",
+    "GCU":"A", "GCC":"A", "GCA":"A", "GCG":"A",
+    "GAU":"D", "GAC":"D", "GAA":"E", "GAG":"E",
+    "GGU":"G", "GGC":"G", "GGA":"G", "GGG":"G",}
+    sequence = 0
+    table.set(protein)
+
+protein = 'MA'
+print(source_rna(protein))
 
 
-
-
+def splice_rna(dna, intron_list):
+    """Takes two strings and turns DNA into RNA and then splices the RNA.
+    It splices it into two segments. One part is the introns which are
+    removed and the other is the exons which are left in."""
+    for intron in intron_list:
+        if dna.find(intron) > -1:
+            dna = dna.replace(intron, '')
+        return rna2codon(dna2rna(dna))
+    
+dna1 =  "ATGGTCTACATAGCTGACAAACAGCACGTAGCAATCGGTCGAATCTCGAGAGGCATATGGTCACATGATCGGTCGAGCGTGTTTCAAAGTTTGCGCCTAG"
+intron_list1 = ["ATCGGTCGAA", "ATCGGTCGAGCGTGT"]
+print(splice_rna(dna1,intron_list1))
